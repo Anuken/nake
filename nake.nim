@@ -51,13 +51,9 @@ when isMainModule:
     if nakeSelf.len > 0:
       dependencies.add(nakeSelf)
 
-    if nakeExe.needsRefresh(dependencies):
-      # Recompiles the nakefile before running it.
-      direSilentShell("Compiling nakefile...", nimExe, "c", nakeSource.quoteShell())
-
     var res = false
     withDir nakefileDir:
-      res = shell(nakeExe.quoteShell(), args)
+      res = shell("nim r -w:off --hints:off --verbosity:0", nakeSource.quoteShell(), args)
     quit (if res: 0 else: 1)
 
   mainExecution()
